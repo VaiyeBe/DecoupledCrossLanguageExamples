@@ -21,24 +21,16 @@ SET( LIBINCLUDE_DIRS
     ${TEMPLATIOUS_DIR}
     ${PLUMBING_DIR} )
 
-SET( APPINCLUDE_DIRS
-    ${SRC_DIR} )
-
-SET( DOMAIN_SOURCES
-    src/model/AsyncSqlite.cpp
-    )
-
 include_directories(
     ${LIBINCLUDE_DIRS}
-    ${APPINCLUDE_DIRS}
 )
 
-link_directories(${GTKMM_LIBRARY_DIRS})
+link_directories( ${GTKMM_LIBRARY_DIRS} )
 
-add_subdirectory( ${PLUMBING_DIR} )
+add_subdirectory( ${PLUMBING_DIR}/LuaPlumbing )
 
 SET( CMAKE_EXPORT_COMPILE_COMMANDS yes )
 
 add_executable( generator tests/model-tests.cpp )
-target_link_libraries( generator domain sqlite3 pthread )
+target_link_libraries( generator domain pthread )
 
