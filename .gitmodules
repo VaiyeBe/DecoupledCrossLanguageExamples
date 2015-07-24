@@ -1,3 +1,6 @@
 [submodule "TemplatiousLib/templatious"]
 	path = TemplatiousLib/templatious
 	url = /home/deividas/Desktop/Dropbox/MyPrj/Templatious/templatious
+[submodule "LibLuaPlumbing/LuaPlumbing"]
+	path = LibLuaPlumbing/LuaPlumbing
+	url = /home/deividas/Desktop/Dropbox/MyPrj/Templatious/LuaPlumbing
