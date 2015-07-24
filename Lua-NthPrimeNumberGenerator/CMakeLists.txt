@@ -27,7 +27,7 @@ include_directories(
 
 link_directories( ${GTKMM_LIBRARY_DIRS} )
 
-add_subdirectory( ${PLUMBING_DIR}/LuaPlumbing )
+add_subdirectory( ${PLUMBING_DIR}/LuaPlumbing ${CMAKE_BINARY_DIR}/LibPlumbing )
 
 SET( CMAKE_EXPORT_COMPILE_COMMANDS yes )
 
