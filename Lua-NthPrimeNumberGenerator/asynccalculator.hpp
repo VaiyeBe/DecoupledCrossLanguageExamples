@@ -3,4 +3,9 @@
 
 #include <LuaPlumbing/plumbing.hpp>
 
+struct AsyncNthCalculator {
+
+    struct NewJob {};
+};
+
 #endif /* end of include guard: ASYNCCALCULATOR_TMOM2CHP */
