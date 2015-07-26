@@ -194,6 +194,24 @@ templatious::DynVPackFactory makeVfactory() {
 
 static auto vFactory = makeVfactory();
 
+void spinWindowUpdateThread(const std::shared_ptr< GtkMainWindow >& mwnd) {
+    std::weak_ptr< GtkMainWindow > weakWnd = mwnd;
+    std::thread([=]() {
+        for (;;) {
+            std::this_thread::sleep_for( std::chrono::milliseconds(250) );
+            auto strong = weakWnd.lock();
+            if (nullptr == strong) {
+                return;
+            }
+            typedef GenericMesseagableInterface GMI;
+            auto update = SF::vpack< GMI::OutRequestUpdate >(
+                GMI::OutRequestUpdate()
+            );
+            strong->message(update);
+        }
+    }).detach();
+}
+
 int main (int argc, char **argv)
 {
     auto ctx = LuaContext::makeContext("LibPlumbing/plumbing.lua");
@@ -227,6 +245,7 @@ int main (int argc, char **argv)
     ctx->addMesseagableWeak("mainWnd",mwnd);
     ctx->addMesseagableWeak("generator",generator);
     ctx->doFile("main.lua");
+    spinWindowUpdateThread(mwnd);
     app->run(*mwnd->getPtr());
 
     return 0;
