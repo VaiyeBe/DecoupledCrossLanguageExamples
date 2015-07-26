@@ -99,6 +99,6 @@ private:
 };
 
 StrongMsgPtr AsyncPrimeGenerator::makeGenerator() {
-
+    return std::make_shared< AsyncPrimeNumberGen >();
 }
 
