@@ -7,12 +7,25 @@ initStuff = function()
 
     theContext:attachContextTo(mainWnd)
 
-    theContext:message(mainWnd,VSig("mwnd_insetlabel"),"Press GO to generate nth prime number")
+    theContext:message(mainWnd,VSig("mwnd_insetlabel"),
+        "Press GO to generate nth prime number")
 
     local mainWndPushButtonMatch = VMatchFunctor.create(
         VMatch(function()
             local gen = theContext:namedMesseagable("generator")
             theContext:message(mainWnd,VSig("mwnd_setgoenabled"),VBool(false))
+            local out = theContext:messageRetValues(
+                mainWnd,VSig("mwnd_querylabel"),VString("empty"))
+
+            local num = tonumber(out._2)
+
+            if (num == nil) then
+                theContext:message(mainWnd,VSig("mwnd_insetlabel"),
+                    "Number could not be parsed.")
+                theContext:message(mainWnd,VSig("mwnd_setgoenabled"),VBool(true))
+                return
+            end
+
             local vmatch = VMatchFunctor.create(
                 VMatch(function(natpack,val)
                     local updateStr = "Found " .. val:values()._2 .. " primes..."
@@ -32,7 +45,7 @@ initStuff = function()
             end)
             theContext:attachToProcessing(updateHandler)
             theContext:message(gen,VSig("apg_asyncjob"),
-                VMsg(updateHandler),VInt(2000),VInt(100))
+                VMsg(updateHandler),VInt(num),VInt(100))
         end,"mwnd_outbtnclicked")
     )
 
