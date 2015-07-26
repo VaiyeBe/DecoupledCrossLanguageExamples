@@ -136,8 +136,8 @@ private:
                     s = this->_ent->get_text().c_str();
                 }
             ),
-            SF::virtualMatch< Msg::InQueueRedraw >(
-                [=](Msg::InQueueRedraw) {
+            SF::virtualMatch< GMI::OutRequestUpdate >(
+                [=](GMI::OutRequestUpdate) {
                     this->_wnd->queue_draw();
                 }
             ),
@@ -183,7 +183,6 @@ templatious::DynVPackFactory makeVfactory() {
     ATTACH_NAMED_DUMMY( bld, "mwnd_querylabel", MWI::QueryLabelText );
     ATTACH_NAMED_DUMMY( bld, "mwnd_inattachmsg", MWI::InAttachMesseagable );
     ATTACH_NAMED_DUMMY( bld, "mwnd_outbtnclicked", MWI::OutButtonClicked );
-    ATTACH_NAMED_DUMMY( bld, "mwnd_inqueueredraw", MWI::InQueueRedraw );
 
     ATTACH_NAMED_DUMMY( bld, "apg_asyncjob", APG::AsyncJob );
     ATTACH_NAMED_DUMMY( bld, "apg_asyncupdate", APG::AsyncUpdate );
