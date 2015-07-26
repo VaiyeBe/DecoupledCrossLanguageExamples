@@ -102,8 +102,8 @@ private:
                     this->_dvmf.attach(std::move(h));
                 }
             ),
-            SF::virtualMatch< Msg::InAttachMesseagable, std::weak_ptr< Messageable > >(
-                [=](Msg::InAttachMesseagable,std::weak_ptr< Messageable >& h) {
+            SF::virtualMatch< Msg::InAttachMesseagable, std::shared_ptr< Messageable > >(
+                [=](Msg::InAttachMesseagable,const std::shared_ptr< Messageable >& h) {
                     SA::add(this->_tonotify,h);
                 }
             ),
