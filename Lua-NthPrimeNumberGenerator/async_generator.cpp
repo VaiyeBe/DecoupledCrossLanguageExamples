@@ -24,7 +24,7 @@ private:
 
     VmfPtr genHandler() {
         typedef AsyncPrimeGenerator APG;
-        SF::virtualMatchFunctorPtr(
+        return SF::virtualMatchFunctorPtr(
             SF::virtualMatch< APG::AsyncJob, StrongMsgPtr, int, int >(
                 [=](APG::AsyncJob,StrongMsgPtr& msg,int to,int update) {
 
