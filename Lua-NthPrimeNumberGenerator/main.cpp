@@ -136,6 +136,11 @@ private:
                     s = this->_ent->get_text().c_str();
                 }
             ),
+            SF::virtualMatch< Msg::InQueueRedraw >(
+                [=](Msg::InQueueRedraw) {
+                    this->_wnd->queue_draw();
+                }
+            ),
             SF::virtualMatch<
                 GMI::InAttachToEventLoop, std::function<bool()>
             >(
