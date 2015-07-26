@@ -185,7 +185,7 @@ static auto vFactory = makeVfactory();
 
 int main (int argc, char **argv)
 {
-    auto ctx = LuaContext::makeContext();
+    auto ctx = LuaContext::makeContext("LibPlumbing/plumbing.lua");
     ctx->setFactory(&vFactory);
     Glib::RefPtr<Gtk::Application> app = Gtk::Application::create(argc, argv, "org.gtkmm.example");
 
