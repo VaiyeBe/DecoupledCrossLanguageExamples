@@ -12,14 +12,18 @@ initStuff = function()
     local mainWndPushButtonMatch = VMatchFunctor.create(
         VMatch(function()
             local gen = theContext:namedMesseagable("generator")
+            theContext:message(mainWnd,VSig("mwnd_insetgoenabled"),VBool(false))
             local vmatch = VMatchFunctor.create(
                 VMatch(function(natpack,val)
-                    print('GAH')
                     local updateStr = "Found " .. val:values()._2 .. " primes..."
-                    print(updateStr)
                     theContext:message(mainWnd,VSig("mwnd_insetlabel"),VString(updateStr))
                 end,
-                "apg_asyncupdate","int")
+                "apg_asyncupdate","int"),
+                VMatch(function(natpack,val)
+                    local updateStr = "Nth prime number is: " .. val:values()._2
+                    theContext:message(mainWnd,VSig("mwnd_insetlabel"),VString(updateStr))
+                    theContext:message(mainWnd,VSig("mwnd_insetgoenabled"),VBool(true))
+                end,"apg_asyncfinish","int")
             )
             local updateHandler = theContext:makeLuaHandler(function(pack)
                 print('boyz 2 men')
@@ -27,7 +31,7 @@ initStuff = function()
             end)
             theContext:attachToProcessing(updateHandler)
             theContext:message(gen,VSig("apg_asyncjob"),
-                VMsg(updateHandler),VInt(2000),VInt(250))
+                VMsg(updateHandler),VInt(2000),VInt(100))
         end,"mwnd_outbtnclicked")
     )
 
