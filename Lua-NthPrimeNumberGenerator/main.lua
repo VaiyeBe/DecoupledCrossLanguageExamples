@@ -12,7 +12,7 @@ initStuff = function()
     local mainWndPushButtonMatch = VMatchFunctor.create(
         VMatch(function()
             local gen = theContext:namedMesseagable("generator")
-            theContext:message(mainWnd,VSig("mwnd_insetgoenabled"),VBool(false))
+            theContext:message(mainWnd,VSig("mwnd_setgoenabled"),VBool(false))
             local vmatch = VMatchFunctor.create(
                 VMatch(function(natpack,val)
                     local updateStr = "Found " .. val:values()._2 .. " primes..."
@@ -22,7 +22,7 @@ initStuff = function()
                 VMatch(function(natpack,val)
                     local updateStr = "Nth prime number is: " .. val:values()._2
                     theContext:message(mainWnd,VSig("mwnd_insetlabel"),VString(updateStr))
-                    theContext:message(mainWnd,VSig("mwnd_insetgoenabled"),VBool(true))
+                    theContext:message(mainWnd,VSig("mwnd_setgoenabled"),VBool(true))
                 end,"apg_asyncfinish","int")
             )
             local updateHandler = theContext:makeLuaHandler(function(pack)
