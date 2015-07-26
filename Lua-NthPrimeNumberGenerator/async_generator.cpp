@@ -7,6 +7,8 @@
 
 TEMPLATIOUS_TRIPLET_STD;
 
+typedef AsyncPrimeGenerator APG;
+
 namespace {
 
 bool isPrime(int number) {
@@ -32,20 +34,29 @@ void asyncRoutine(StrongMsgPtr& msg,int to,int updateMS) {
     std::thread([=]() {
         int primeCount = 0;
         int i = 1;
-        long lastCount = std::chrono::high_resolution_clock()
+        long lastCount = currentMillis();
         while (primeCount < to) {
             ++i;
             if (isPrime(i)) {
                 ++primeCount;
-                // lock weak pointer
-                auto locked = weak.lock();
-                if (weak.expired()) {
-                    // main window dead, return
-                    return;
+                long curr = currentMillis();
+                if (curr - lastCount >= updateMS) {
+                    // lock weak pointer
+                    auto locked = weak.lock();
+                    if (weak.expired()) {
+                        // object to notify dead,
+                        // return
+                        return;
+                    }
+
+                    auto update = SF::vpackPtr< APG::AsyncUpdate, int >(nullptr,primeCount);
+                    locked->message(update);
+
+                    lastCount = curr;
                 }
             }
         }
-    });
+    }).detach();
 }
 
 }
@@ -66,7 +77,6 @@ private:
     typedef std::unique_ptr< templatious::VirtualMatchFunctor > VmfPtr;
 
     VmfPtr genHandler() {
-        typedef AsyncPrimeGenerator APG;
         return SF::virtualMatchFunctorPtr(
             SF::virtualMatch< APG::AsyncJob, StrongMsgPtr, int, int >(
                 [=](APG::AsyncJob,StrongMsgPtr& msg,int to,int update) {
