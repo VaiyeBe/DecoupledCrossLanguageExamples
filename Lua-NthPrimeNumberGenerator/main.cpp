@@ -5,6 +5,7 @@
 #include <templatious/detail/DynamicPackCreator.hpp>
 
 #include "mainwindow_interface.h"
+#include "async_generator.h"
 #include <LuaPlumbing/plumbing.hpp>
 
 TEMPLATIOUS_TRIPLET_STD;
