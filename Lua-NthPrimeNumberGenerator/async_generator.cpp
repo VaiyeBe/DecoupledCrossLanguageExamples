@@ -9,8 +9,43 @@ TEMPLATIOUS_TRIPLET_STD;
 
 namespace {
 
-void asyncRoutine(StrongMsgPtr& msg,int to,int updateMS) {
+bool isPrime(int number) {
+    int count = 0;
+    for (int i = 1; i <= number; ++i) {
+        if (number % i == 0) {
+            ++count;
+        }
+    }
+    return count == 2;
+}
 
+long currentMillis() {
+    static auto referencePoint = std::chrono::high_resolution_clock::now();
+
+    return std::chrono::duration_cast< std::chrono::milliseconds >(
+        std::chrono::high_resolution_clock::now() - referencePoint
+    ).count();
+}
+
+void asyncRoutine(StrongMsgPtr& msg,int to,int updateMS) {
+    WeakMsgPtr weak = msg;
+    std::thread([=]() {
+        int primeCount = 0;
+        int i = 1;
+        long lastCount = std::chrono::high_resolution_clock()
+        while (primeCount < to) {
+            ++i;
+            if (isPrime(i)) {
+                ++primeCount;
+                // lock weak pointer
+                auto locked = weak.lock();
+                if (weak.expired()) {
+                    // main window dead, return
+                    return;
+                }
+            }
+        }
+    });
 }
 
 }
