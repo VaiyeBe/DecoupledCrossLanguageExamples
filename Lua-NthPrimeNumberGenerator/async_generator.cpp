@@ -7,6 +7,14 @@
 
 TEMPLATIOUS_TRIPLET_STD;
 
+namespace {
+
+void asyncRoutine(StrongMsgPtr& msg,int to,int updateMS) {
+
+}
+
+}
+
 struct AsyncPrimeNumberGen : public Messageable {
 
     AsyncPrimeNumberGen() : _handler(genHandler()) {}
@@ -27,7 +35,7 @@ private:
         return SF::virtualMatchFunctorPtr(
             SF::virtualMatch< APG::AsyncJob, StrongMsgPtr, int, int >(
                 [=](APG::AsyncJob,StrongMsgPtr& msg,int to,int update) {
-
+                    asyncRoutine(msg,to,update);
                 }
             )
         );
