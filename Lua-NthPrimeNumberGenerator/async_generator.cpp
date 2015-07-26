@@ -1,4 +1,6 @@
 
+#include <templatious/FullPack.hpp>
+
 #include <LuaPlumbing/messageable.hpp>
 
 #include "async_generator.h"
