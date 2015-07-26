@@ -171,11 +171,17 @@ templatious::DynVPackFactory makeVfactory() {
 
     typedef MainWindowInterface MWI;
     typedef GenericMesseagableInterface GNI;
+    typedef AsyncPrimeGenerator APG;
+
     ATTACH_NAMED_DUMMY( bld, "mwnd_insetprog", MWI::InSetProgress );
     ATTACH_NAMED_DUMMY( bld, "mwnd_insetlabel", MWI::InSetStatusText );
     ATTACH_NAMED_DUMMY( bld, "mwnd_querylabel", MWI::QueryLabelText );
     ATTACH_NAMED_DUMMY( bld, "mwnd_inattachmsg", MWI::InAttachMesseagable );
     ATTACH_NAMED_DUMMY( bld, "mwnd_outbtnclicked", MWI::OutButtonClicked );
+
+    ATTACH_NAMED_DUMMY( bld, "apg_asyncjob", APG::AsyncJob );
+    ATTACH_NAMED_DUMMY( bld, "apg_asyncupdate", APG::AsyncUpdate );
+    ATTACH_NAMED_DUMMY( bld, "apg_asyncfinish", APG::AsyncFinish );
 
     return bld.getFactory();
 }
