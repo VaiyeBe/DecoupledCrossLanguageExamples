@@ -74,9 +74,7 @@ private:
 
     bool onPaint(const Cairo::RefPtr<Cairo::Context>& cr) {
         processMessages();
-        TEMPLATIOUS_FOREACH(auto& i,_funcs) {
-            i();
-        }
+        _callbackCache.process();
         return false;
     }
 
@@ -138,22 +136,22 @@ private:
                 }
             ),
             SF::virtualMatch<
-                GMI::InAttachToEventLoop, std::function<void()>
+                GMI::InAttachToEventLoop, std::function<bool()>
             >(
-                [=](GMI::InAttachToEventLoop,std::function<void()>& func) {
-                    SA::add(this->_funcs,func);
+                [=](GMI::InAttachToEventLoop,std::function<bool()>& func) {
+                    this->_callbackCache.attach(func);
                 }
             )
         );
     }
 
-    std::vector< std::function<void()> > _funcs;
     Gtk::Window* _wnd;
     Gtk::Button* _btn;
     Gtk::Entry* _ent;
     Gtk::ProgressBar* _prog;
     Gtk::Label* _lbl;
     std::mutex _mtx;
+    CallbackCache _callbackCache;
     std::vector< MsgPtr > _queue;
     templatious::DynamicVMatchFunctor _dvmf;
     std::vector< MesseagablePtr > _tonotify;
