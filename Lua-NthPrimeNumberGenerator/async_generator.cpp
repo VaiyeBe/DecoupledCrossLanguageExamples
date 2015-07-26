@@ -64,6 +64,7 @@ void asyncRoutine(StrongMsgPtr& msg,int to,int updateMS) {
             return;
         }
         auto update = SF::vpackPtr< APG::AsyncFinish, int >(nullptr,i);
+        locked->message(update);
 
     }).detach();
 }

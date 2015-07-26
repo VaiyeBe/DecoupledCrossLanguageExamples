@@ -5,7 +5,7 @@ initStuff = function()
     local theContext = luaContext()
     local mainWnd = theContext:namedMesseagable("mainWnd")
 
-    theContext:attachToProcessing(mainWnd)
+    theContext:attachContextTo(mainWnd)
 
     theContext:message(mainWnd,VSig("mwnd_insetlabel"),"Press GO to generate nth prime number")
 
@@ -23,7 +23,7 @@ initStuff = function()
                 vmatch:tryMatch(pack)
             end)
             theContext:message(gen,VSig("apg_asyncjob"),
-                VMsg(updateHandler),VInt(1000),VInt(250))
+                VMsg(updateHandler),VInt(2000),VInt(250))
         end,"mwnd_outbtnclicked")
     )
 
