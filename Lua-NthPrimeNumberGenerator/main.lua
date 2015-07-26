@@ -23,7 +23,8 @@ initStuff = function()
                     local updateStr = "Nth prime number is: " .. val:values()._2
                     theContext:message(mainWnd,VSig("mwnd_insetlabel"),VString(updateStr))
                     theContext:message(mainWnd,VSig("mwnd_setgoenabled"),VBool(true))
-                end,"apg_asyncfinish","int")
+                end,
+                "apg_asyncfinish","int")
             )
             local updateHandler = theContext:makeLuaHandler(function(pack)
                 print('boyz 2 men')
