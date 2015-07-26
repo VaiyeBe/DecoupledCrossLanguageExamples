@@ -2,24 +2,24 @@ print('hello werld!')
 
 initStuff = function()
 
-    theContext = luaContext()
-    mainWnd = theContext:namedMesseagable("mainWnd")
+    local theContext = luaContext()
+    local mainWnd = theContext:namedMesseagable("mainWnd")
 
     theContext:attachToProcessing(mainWnd)
 
     theContext:message(mainWnd,VSig("mwnd_insetlabel"),"CHOLO")
 
-    mainWndPushButtonMatch = VMatchFunctor.create(
+    local mainWndPushButtonMatch = VMatchFunctor.create(
         VMatch(function()
             print('oh noes!')
         end,VSig("mwnd_outbtnclicked"))
     )
 
-    mainWndPushButtonHandler = theContext:makeLuaHandler(function(pack)
-        mainWndPushButtonMatch.tryMatch(pack)
+    local mainWndPushButtonHandler = theContext:makeLuaHandler(function(pack)
+        mainWndPushButtonMatch:tryMatch(pack)
     end)
 
-    theContext:message(mainWnd,VSig("mwnd_inattachmsg"),mainWndPushButtonHandler)
+    theContext:message(mainWnd,VSig("mwnd_inattachmsg"),VMsg(mainWndPushButtonHandler))
 
 end
 initStuff()
