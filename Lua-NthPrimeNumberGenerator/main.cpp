@@ -196,9 +196,12 @@ static auto vFactory = makeVfactory();
 
 void spinWindowUpdateThread(const std::shared_ptr< GtkMainWindow >& mwnd) {
     std::weak_ptr< GtkMainWindow > weakWnd = mwnd;
+    const int PERIODICITY_MS = 100;
     std::thread([=]() {
         for (;;) {
-            std::this_thread::sleep_for( std::chrono::milliseconds(250) );
+            std::this_thread::sleep_for(
+                std::chrono::milliseconds( PERIODICITY_MS )
+            );
             auto strong = weakWnd.lock();
             if (nullptr == strong) {
                 return;
