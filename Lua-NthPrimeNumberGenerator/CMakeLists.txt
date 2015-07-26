@@ -25,6 +25,13 @@ include_directories(
     ${LIBINCLUDE_DIRS}
 )
 
+add_custom_target(
+    copy_main_lua
+    ALL
+    DEPENDS generator
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_SOURCE_DIR}/main.lua ${CMAKE_CURRENT_BINARY_DIR}/main.lua
+)
+
 link_directories( ${GTKMM_LIBRARY_DIRS} )
 
 add_subdirectory( ${PLUMBING_DIR}/LuaPlumbing ${CMAKE_BINARY_DIR}/LibPlumbing )
