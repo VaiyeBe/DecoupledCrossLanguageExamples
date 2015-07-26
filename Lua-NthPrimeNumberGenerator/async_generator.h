@@ -6,7 +6,7 @@
 struct Messageable;
 
 #define DUMMY_STRUCT(name) \
-    struct name { template <class T> name(T&&) {} };
+    struct name { name() = default; template <class T> name(T&&) {} };
 
 struct AsyncPrimeGenerator {
 
