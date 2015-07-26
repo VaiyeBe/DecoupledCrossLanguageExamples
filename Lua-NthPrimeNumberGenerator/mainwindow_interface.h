@@ -44,6 +44,10 @@ struct MainWindowInterface {
     // signature < InShow >
     struct InShow {};
 
+    // queue redraw of the window
+    // signature < InQueueRedraw >
+    struct InQueueRedraw {};
+
     // query text for the label
     // signature <
     // QueryLabelText,
@@ -54,7 +58,6 @@ struct MainWindowInterface {
     // emitted when button is pressed
     // signature <OutButtonClicked>
     struct OutButtonClicked {};
-
 };
 
 #endif // MAINWINDOW_INTERFACE

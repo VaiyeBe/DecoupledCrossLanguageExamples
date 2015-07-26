@@ -14,14 +14,18 @@ initStuff = function()
             local gen = theContext:namedMesseagable("generator")
             local vmatch = VMatchFunctor.create(
                 VMatch(function(natpack,val)
-                    local updateStr = "Found " .. val._2 .. " primes..."
+                    print('GAH')
+                    local updateStr = "Found " .. val:values()._2 .. " primes..."
+                    print(updateStr)
                     theContext:message(mainWnd,VSig("mwnd_insetlabel"),VString(updateStr))
                 end,
                 "apg_asyncupdate","int")
             )
             local updateHandler = theContext:makeLuaHandler(function(pack)
+                print('boyz 2 men')
                 vmatch:tryMatch(pack)
             end)
+            theContext:attachToProcessing(updateHandler)
             theContext:message(gen,VSig("apg_asyncjob"),
                 VMsg(updateHandler),VInt(2000),VInt(250))
         end,"mwnd_outbtnclicked")
