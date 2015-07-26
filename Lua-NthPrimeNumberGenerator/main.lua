@@ -7,7 +7,7 @@ initStuff = function()
 
     theContext:attachToProcessing(mainWnd)
 
-    theContext:message(mainWnd,VSig("mwnd_insetlabel"),"CHOLO")
+    theContext:message(mainWnd,VSig("mwnd_insetlabel"),"Press GO to generate nth prime number")
 
     local mainWndPushButtonMatch = VMatchFunctor.create(
         VMatch(function()
