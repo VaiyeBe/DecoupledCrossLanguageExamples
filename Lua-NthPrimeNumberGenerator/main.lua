@@ -22,7 +22,8 @@ initStuff = function()
             local updateHandler = theContext:makeLuaHandler(function(pack)
                 vmatch:tryMatch(pack)
             end)
-            theContext:message(gen,"apg_asyncjob",updateHandler)
+            theContext:message(gen,VSig("apg_asyncjob"),
+                VMsg(updateHandler),VInt(1000),VInt(250))
         end,"mwnd_outbtnclicked")
     )
 
