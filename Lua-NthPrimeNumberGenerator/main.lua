@@ -13,9 +13,9 @@ mainWndPushButtonMatch = VMatchFunctor.create(
     end,VSig("mwnd_outbtnclicked"))
 )
 
-mainWndPushButtonHandler = function(pack)
+mainWndPushButtonHandler = theContext:makeLuaHandler(function(pack)
     mainWndPushButtonMatch.tryMatch(pack)
-end
+end)
 
 theContext:message(mainWnd,VSig("mwnd_inattachmsg"),mainWndPushButtonHandler)
 
