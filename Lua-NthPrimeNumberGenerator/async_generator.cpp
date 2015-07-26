@@ -9,8 +9,10 @@ TEMPLATIOUS_TRIPLET_STD;
 
 struct AsyncPrimeNumberGen : public Messageable {
 
-    void message(templatious::VirtualPack& pack) {
+    AsyncPrimeNumberGen() : _handler(genHandler()) {}
 
+    void message(templatious::VirtualPack& pack) {
+        _handler->tryMatch(pack);
     }
 
     void message(const StrongPackPtr& pack) {
@@ -30,6 +32,8 @@ private:
             )
         );
     }
+
+    VmfPtr _handler;
 };
 
 StrongMsgPtr AsyncPrimeGenerator::makeGenerator() {
