@@ -1,3 +1,4 @@
+require('mobdebug').start()
 initStuff = function()
 
     local theContext = luaContext()
@@ -8,7 +9,7 @@ initStuff = function()
     theContext:message(mainWnd,VSig("mwnd_insetlabel"),
         "Press GO to generate nth prime number")
 
-    local mainWndPushButtonMatch = VMatchFunctor.create(
+    mainWndPushButtonHandler = theContext:makeLuaMatchHandler(
         VMatch(function()
             local gen = theContext:namedMesseagable("generator")
             theContext:message(mainWnd,VSig("mwnd_setgoenabled"),VBool(false))
@@ -24,7 +25,7 @@ initStuff = function()
                 return
             end
 
-            local vmatch = VMatchFunctor.create(
+            asyncHandler = theContext:makeLuaMatchHandler(
                 VMatch(function(natpack,val)
                     local theNum = val:values()._2
                     local updateStr = "Found " .. theNum .. " primes..."
@@ -41,18 +42,10 @@ initStuff = function()
                 end,
                 "apg_asyncfinish","int")
             )
-            updateHandler = theContext:makeLuaHandler(function(pack)
-                vmatch:tryMatch(pack)
-            end)
-            theContext:attachToProcessing(updateHandler)
             theContext:message(gen,VSig("apg_asyncjob"),
-                VMsg(updateHandler),VInt(num),VInt(100))
+                VMsg(asyncHandler),VInt(num),VInt(100))
         end,"mwnd_outbtnclicked")
     )
-
-    mainWndPushButtonHandler = theContext:makeLuaHandler(function(pack)
-        mainWndPushButtonMatch:tryMatch(pack)
-    end)
 
     theContext:message(mainWnd,VSig("mwnd_inattachmsg"),VMsg(mainWndPushButtonHandler))
 
