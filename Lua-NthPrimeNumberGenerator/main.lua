@@ -28,13 +28,17 @@ initStuff = function()
 
             local vmatch = VMatchFunctor.create(
                 VMatch(function(natpack,val)
-                    local updateStr = "Found " .. val:values()._2 .. " primes..."
+                    local theNum = val:values()._2
+                    local updateStr = "Found " .. theNum .. " primes..."
+                    local updatePercent = (theNum / num) * 100;
                     theContext:message(mainWnd,VSig("mwnd_insetlabel"),VString(updateStr))
+                    theContext:message(mainWnd,VSig("mwnd_insetprog"),VInt( updatePercent ))
                 end,
                 "apg_asyncupdate","int"),
                 VMatch(function(natpack,val)
                     local updateStr = "Nth prime number is: " .. val:values()._2
                     theContext:message(mainWnd,VSig("mwnd_insetlabel"),VString(updateStr))
+                    theContext:message(mainWnd,VSig("mwnd_insetprog"),VInt( 100 ))
                     theContext:message(mainWnd,VSig("mwnd_setgoenabled"),VBool(true))
                 end,
                 "apg_asyncfinish","int")
