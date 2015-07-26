@@ -56,6 +56,15 @@ void asyncRoutine(StrongMsgPtr& msg,int to,int updateMS) {
                 }
             }
         }
+
+        auto locked = weak.lock();
+        if (weak.expired()) {
+            // object to notify dead,
+            // return
+            return;
+        }
+        auto update = SF::vpackPtr< APG::AsyncFinish, int >(nullptr,i);
+
     }).detach();
 }
 
