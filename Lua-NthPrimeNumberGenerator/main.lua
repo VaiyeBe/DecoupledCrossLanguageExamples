@@ -26,7 +26,7 @@ initStuff = function()
                 end,
                 "apg_asyncfinish","int")
             )
-            local updateHandler = theContext:makeLuaHandler(function(pack)
+            updateHandler = theContext:makeLuaHandler(function(pack)
                 print('boyz 2 men')
                 vmatch:tryMatch(pack)
             end)
@@ -36,7 +36,7 @@ initStuff = function()
         end,"mwnd_outbtnclicked")
     )
 
-    local mainWndPushButtonHandler = theContext:makeLuaHandler(function(pack)
+    mainWndPushButtonHandler = theContext:makeLuaHandler(function(pack)
         mainWndPushButtonMatch:tryMatch(pack)
     end)
 
