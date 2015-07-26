@@ -12,7 +12,7 @@ initStuff = function()
     local mainWndPushButtonMatch = VMatchFunctor.create(
         VMatch(function()
             print('oh noes!')
-        end,VSig("mwnd_outbtnclicked"))
+        end,"mwnd_outbtnclicked")
     )
 
     local mainWndPushButtonHandler = theContext:makeLuaHandler(function(pack)
