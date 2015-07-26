@@ -11,7 +11,18 @@ initStuff = function()
 
     local mainWndPushButtonMatch = VMatchFunctor.create(
         VMatch(function()
-            print('oh noes!')
+            local gen = theContext:namedMesseagable("generator")
+            local vmatch = VMatchFunctor.create(
+                VMatch(function(natpack,val)
+                    local updateStr = "Found " .. val._2 .. " primes..."
+                    theContext:message(mainWnd,VSig("mwnd_insetlabel"),VString(updateStr))
+                end,
+                "apg_asyncupdate","int")
+            )
+            local updateHandler = theContext:makeLuaHandler(function(pack)
+                vmatch:tryMatch(pack)
+            end)
+            theContext:message()
         end,"mwnd_outbtnclicked")
     )
 
