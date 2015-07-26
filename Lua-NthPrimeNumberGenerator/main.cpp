@@ -217,7 +217,9 @@ int main (int argc, char **argv)
     }
 
     auto mwnd = std::make_shared< GtkMainWindow >(refBuilder);
+    auto generator = AsyncPrimeGenerator::makeGenerator();
     ctx->addMesseagableWeak("mainWnd",mwnd);
+    ctx->addMesseagableWeak("generator",generator);
     ctx->doFile("main.lua");
     app->run(*mwnd->getPtr());
 
