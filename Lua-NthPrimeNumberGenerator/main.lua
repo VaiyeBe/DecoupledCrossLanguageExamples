@@ -1,5 +1,3 @@
-print('hello werld!')
-
 initStuff = function()
 
     local theContext = luaContext()
