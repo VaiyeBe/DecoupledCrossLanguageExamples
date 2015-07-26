@@ -40,6 +40,6 @@ add_subdirectory( ${PLUMBING_DIR}/LuaPlumbing ${CMAKE_BINARY_DIR}/LibPlumbing )
 
 SET( CMAKE_EXPORT_COMPILE_COMMANDS yes )
 
-add_executable( generator main.cpp )
+add_executable( generator main.cpp async_generator.cpp )
 target_link_libraries( generator plumbing pthread ${GTKMM_LIBRARIES} )
 
