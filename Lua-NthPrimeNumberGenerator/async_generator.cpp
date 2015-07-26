@@ -1,5 +1,20 @@
 
+#include <LuaPlumbing/messageable.hpp>
+
 #include "async_generator.h"
 
-//std::shared_ptr< Messageable > AsyncPrimeGenerator::
+struct AsyncPrimeNumberGen : public Messageable {
+
+    void message(templatious::VirtualPack& pack) {
+
+    }
+
+    void message(const StrongPackPtr& pack) {
+
+    }
+};
+
+StrongMsgPtr AsyncPrimeGenerator::makeGenerator() {
+
+}
 
