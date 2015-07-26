@@ -11,7 +11,10 @@ struct Messageable;
 struct AsyncPrimeGenerator {
 
     // signature:
-    // < AsyncJob, int (number), int (update interval, milliseconds) >
+    // < AsyncJob,
+    // StrongMsgPtr (object to update),
+    // int (number),
+    // int (update interval, milliseconds) >
     DUMMY_STRUCT(AsyncJob);
 
     // signature:
