@@ -19,7 +19,7 @@ before_script:
     - pushd build
     - cmake ../Lua-NthPrimeNumberGenerator
 
-script: make && ./tests
+script: make
 
 env:
     - TEMPLATIOUS_DIR=$TRAVIS_BUILD_DIR/TemplatiousLib
