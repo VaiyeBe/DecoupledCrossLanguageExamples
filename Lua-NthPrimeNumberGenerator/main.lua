@@ -1,4 +1,3 @@
-require('mobdebug').start()
 initStuff = function()
 
     local theContext = luaContext()
