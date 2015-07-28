@@ -4,7 +4,7 @@
 #include <templatious/FullPack.hpp>
 #include <templatious/detail/DynamicPackCreator.hpp>
 
-#include "mainwindow_interface.h"
+#include "mainwindow.h"
 #include "async_generator.h"
 #include <LuaPlumbing/plumbing.hpp>
 
