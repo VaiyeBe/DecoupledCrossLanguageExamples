@@ -5,7 +5,6 @@ find_package(PkgConfig REQUIRED)
 
 pkg_check_modules(GTKMM gtkmm-3.0)
 
-#SET( PLUMBING_DIR submodules/LibLuaPlumbing/LuaPlumbing )
 SET( PLUMBING_DIR ../LibLuaPlumbing )
 SET( TEMPLATIOUS_DIR ../TemplatiousLib )
 SET( SRC_DIR src )
@@ -31,6 +30,8 @@ add_custom_target(
     DEPENDS generator
     COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_CURRENT_SOURCE_DIR}/main.lua ${CMAKE_CURRENT_BINARY_DIR}/main.lua
 )
+
+file( COPY "ui.glade" DESTINATION ${CMAKE_BINARY_DIR} )
 
 SET( CMAKE_EXPORT_COMPILE_COMMANDS yes )
 
