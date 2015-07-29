@@ -23,6 +23,11 @@ struct MyHipsterStruct : public Messageable {
                 [=](int i) {
                     std::cout << "Received int " << i << std::endl;
                 }
+            ),
+            SF::virtualMatch< std::string >(
+                [=](std::string& i) {
+                    i = "Out from native.";
+                }
             )
         );
     }

@@ -8,7 +8,9 @@ initStuff = function()
 
             local hipster = luaContext:namedMesseagable("hipster")
 
-            luaContext:message(hipster,VInt(7))
+            --luaContext:message(hipster,VInt(7))
+            local out = luaContext:messageRetValues(hipster,VString("empty"))
+            print( "Received: " .. out._1 )
 
         end,"mwnd_outbtnclicked")
     )
