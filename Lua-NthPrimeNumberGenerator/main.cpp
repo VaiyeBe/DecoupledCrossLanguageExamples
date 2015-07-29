@@ -17,6 +17,9 @@ struct MyHipsterStruct : public Messageable {
 
     MyHipsterStruct() : _handler(genHandler()) {}
 
+    struct SetWidth {};
+    struct SetHeight {};
+
     Handler genHandler() {
         return SF::virtualMatchFunctorPtr(
             SF::virtualMatch< int >(
@@ -27,6 +30,16 @@ struct MyHipsterStruct : public Messageable {
             SF::virtualMatch< std::string >(
                 [=](std::string& i) {
                     i = "Out from native.";
+                }
+            ),
+            SF::virtualMatch< SetWidth, int >(
+                [=](SetWidth,int num) {
+                    std::cout << "SetWidth: " << num << std::endl;
+                }
+            ),
+            SF::virtualMatch< SetHeight, int >(
+                [=](SetHeight,int num) {
+                    std::cout << "SetHeight: " << num << std::endl;
                 }
             )
         );
@@ -219,6 +232,9 @@ templatious::DynVPackFactory makeVfactory() {
     ATTACH_NAMED_DUMMY( bld, "apg_asyncjob", APG::AsyncJob );
     ATTACH_NAMED_DUMMY( bld, "apg_asyncupdate", APG::AsyncUpdate );
     ATTACH_NAMED_DUMMY( bld, "apg_asyncfinish", APG::AsyncFinish );
+
+    ATTACH_NAMED_DUMMY( bld, "setwidth", MyHipsterStruct::SetWidth );
+    ATTACH_NAMED_DUMMY( bld, "setheight", MyHipsterStruct::SetHeight );
 
     return bld.getFactory();
 }
