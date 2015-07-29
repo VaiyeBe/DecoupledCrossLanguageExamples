@@ -10,6 +10,32 @@
 
 TEMPLATIOUS_TRIPLET_STD;
 
+struct MyHipsterStruct : public Messageable {
+
+    typedef std::unique_ptr< templatious::VirtualMatchFunctor > Handler;
+    Handler _handler;
+
+    MyHipsterStruct() : _handler(genHandler()) {}
+
+    Handler genHandler() {
+        return SF::virtualMatchFunctorPtr(
+            SF::virtualMatch< int >(
+                [=](int i) {
+                    std::cout << "Received int " << i << std::endl;
+                }
+            )
+        );
+    }
+
+    void message(const std::shared_ptr< templatious::VirtualPack >& msg) override {
+        // not used
+    }
+
+    void message(templatious::VirtualPack& msg) override {
+        _handler->tryMatch(msg);
+    }
+};
+
 struct GtkMainWindow : public Messageable {
     GtkMainWindow(Glib::RefPtr<Gtk::Builder>& bld) :
         _dvmf(true), _msgHandler(genHandler())
@@ -247,6 +273,7 @@ int main (int argc, char **argv)
     auto generator = AsyncPrimeGenerator::makeGenerator();
     ctx->addMesseagableWeak("mainWnd",mwnd);
     ctx->addMesseagableWeak("generator",generator);
+    ctx->addMesseagableStrong("hipster",std::make_shared< MyHipsterStruct >());
     ctx->doFile("main.lua");
     spinWindowUpdateThread(mwnd);
     app->run(*mwnd->getPtr());
