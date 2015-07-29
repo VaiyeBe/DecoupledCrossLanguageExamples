@@ -6,7 +6,9 @@ initStuff = function()
     pushButtonHandler = luaContext:makeLuaMatchHandler(
         VMatch(function()
 
+            local hipster = luaContext:namedMesseagable("hipster")
 
+            luaContext:message(hipster,VInt(7))
 
         end,"mwnd_outbtnclicked")
     )
