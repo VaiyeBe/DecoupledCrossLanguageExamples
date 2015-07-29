@@ -14,8 +14,39 @@ struct MyHipsterStruct : public Messageable {
 
     typedef std::unique_ptr< templatious::VirtualMatchFunctor > Handler;
     Handler _handler;
+    MessageCache _cache;
+    std::condition_variable _cv;
+    std::mutex _mtx;
 
     MyHipsterStruct() : _handler(genHandler()) {}
+
+    static std::shared_ptr< MyHipsterStruct > wrappedStruct() {
+        auto outRes = std::make_shared< MyHipsterStruct >();
+
+        std::weak_ptr< MyHipsterStruct > weak = outRes;
+        std::thread(
+            [=]() {
+                for (;;) {
+                    auto locked = weak.lock();
+                    if (nullptr == locked) {
+                        return;
+                    }
+                    std::unique_lock< std::mutex > ulock(locked->_mtx);
+
+                    locked->_cv.wait(ulock);
+
+                    std::this_thread::sleep_for( std::chrono::milliseconds(1000) );
+                    locked->_cache.process(
+                        [=](templatious::VirtualPack& pack) {
+                            locked->_handler->tryMatch(pack);
+                        }
+                    );
+                }
+            }
+        ).detach();
+
+        return outRes;
+    }
 
     struct SetWidth {};
     struct SetHeight {};
@@ -46,7 +77,8 @@ struct MyHipsterStruct : public Messageable {
     }
 
     void message(const std::shared_ptr< templatious::VirtualPack >& msg) override {
-        // not used
+        _cache.enqueue(msg);
+        _cv.notify_one();
     }
 
     void message(templatious::VirtualPack& msg) override {
@@ -294,7 +326,7 @@ int main (int argc, char **argv)
     auto generator = AsyncPrimeGenerator::makeGenerator();
     ctx->addMesseagableWeak("mainWnd",mwnd);
     ctx->addMesseagableWeak("generator",generator);
-    ctx->addMesseagableStrong("hipster",std::make_shared< MyHipsterStruct >());
+    ctx->addMesseagableStrong("hipster",MyHipsterStruct::wrappedStruct());
     ctx->doFile("main.lua");
     spinWindowUpdateThread(mwnd);
     app->run(*mwnd->getPtr());
