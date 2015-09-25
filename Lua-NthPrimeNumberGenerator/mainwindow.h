@@ -33,12 +33,12 @@ struct MainWindowInterface {
     // >
     struct InAttachCallback {};
 
-    // attach messeagable
+    // attach messageable
     // signature <
-    //     InAttachMesseagable,
-    //     std::weak_ptr< Messeagable >
+    //     InAttachMessageable,
+    //     std::weak_ptr< Messageable >
     // >
-    struct InAttachMesseagable {};
+    struct InAttachMessageable {};
 
     // show window
     // signature < InShow >

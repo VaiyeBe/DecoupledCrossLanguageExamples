@@ -1,7 +1,7 @@
 initStuff = function()
 
     local theContext = luaContext()
-    local mainWnd = theContext:namedMesseagable("mainWnd")
+    local mainWnd = theContext:namedMessageable("mainWnd")
 
     theContext:attachContextTo(mainWnd)
 
@@ -10,7 +10,7 @@ initStuff = function()
 
     mainWndPushButtonHandler = theContext:makeLuaMatchHandler(
         VMatch(function()
-            local gen = theContext:namedMesseagable("generator")
+            local gen = theContext:namedMessageable("generator")
             theContext:message(mainWnd,VSig("mwnd_setgoenabled"),VBool(false))
             local out = theContext:messageRetValues(
                 mainWnd,VSig("mwnd_querylabel"),VString("empty"))

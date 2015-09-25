@@ -56,7 +56,7 @@ struct GtkMainWindow : public Messageable {
 private:
     typedef std::unique_ptr< templatious::VirtualMatchFunctor > Handler;
     typedef std::shared_ptr< templatious::VirtualPack > MsgPtr;
-    typedef std::weak_ptr< Messageable > MesseagablePtr;
+    typedef std::weak_ptr< Messageable > MessageablePtr;
     typedef std::lock_guard< std::mutex > Guard;
     typedef MainWindowInterface Msg;
 
@@ -96,15 +96,15 @@ private:
     }
 
     Handler genHandler() {
-        typedef GenericMesseagableInterface GMI;
+        typedef GenericMessageableInterface GMI;
         return SF::virtualMatchFunctorPtr(
             SF::virtualMatch< Msg::InAttachCallback, Handler >(
                 [=](Msg::InAttachCallback,Handler& h) {
                     this->_dvmf.attach(std::move(h));
                 }
             ),
-            SF::virtualMatch< Msg::InAttachMesseagable, std::shared_ptr< Messageable > >(
-                [=](Msg::InAttachMesseagable,const std::shared_ptr< Messageable >& h) {
+            SF::virtualMatch< Msg::InAttachMessageable, std::shared_ptr< Messageable > >(
+                [=](Msg::InAttachMessageable,const std::shared_ptr< Messageable >& h) {
                     SA::add(this->_tonotify,h);
                 }
             ),
@@ -160,7 +160,7 @@ private:
     CallbackCache _callbackCache;
     std::vector< MsgPtr > _queue;
     templatious::DynamicVMatchFunctor _dvmf;
-    std::vector< MesseagablePtr > _tonotify;
+    std::vector< MessageablePtr > _tonotify;
     Handler _msgHandler;
 };
 
@@ -175,13 +175,13 @@ templatious::DynVPackFactory makeVfactory() {
     LuaContext::registerPrimitives(bld);
 
     typedef MainWindowInterface MWI;
-    typedef GenericMesseagableInterface GNI;
+    typedef GenericMessageableInterface GNI;
     typedef AsyncPrimeGenerator APG;
 
     ATTACH_NAMED_DUMMY( bld, "mwnd_insetprog", MWI::InSetProgress );
     ATTACH_NAMED_DUMMY( bld, "mwnd_insetlabel", MWI::InSetStatusText );
     ATTACH_NAMED_DUMMY( bld, "mwnd_querylabel", MWI::QueryLabelText );
-    ATTACH_NAMED_DUMMY( bld, "mwnd_inattachmsg", MWI::InAttachMesseagable );
+    ATTACH_NAMED_DUMMY( bld, "mwnd_inattachmsg", MWI::InAttachMessageable );
     ATTACH_NAMED_DUMMY( bld, "mwnd_outbtnclicked", MWI::OutButtonClicked );
     ATTACH_NAMED_DUMMY( bld, "mwnd_setgoenabled", MWI::InSetButtonEnabled );
 
@@ -206,7 +206,7 @@ void spinWindowUpdateThread(const std::shared_ptr< GtkMainWindow >& mwnd) {
             if (nullptr == strong) {
                 return;
             }
-            typedef GenericMesseagableInterface GMI;
+            typedef GenericMessageableInterface GMI;
             auto update = SF::vpack< GMI::OutRequestUpdate >(
                 GMI::OutRequestUpdate()
             );
@@ -245,8 +245,8 @@ int main (int argc, char **argv)
 
     auto mwnd = std::make_shared< GtkMainWindow >(refBuilder);
     auto generator = AsyncPrimeGenerator::makeGenerator();
-    ctx->addMesseagableWeak("mainWnd",mwnd);
-    ctx->addMesseagableWeak("generator",generator);
+    ctx->addMessageableWeak("mainWnd",mwnd);
+    ctx->addMessageableWeak("generator",generator);
     ctx->doFile("main.lua");
     spinWindowUpdateThread(mwnd);
     app->run(*mwnd->getPtr());
